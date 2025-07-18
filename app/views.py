@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
-from django.utils import timezone
+from django.utils.timezone import localtime
 from django.db.models import Count
 from django.contrib import messages
 from app.forms import RequestLogForm
 from app.models import *
 
 def short_name(full_name):
-    """FIO dan faqat 2 ta birinchi so‘zni ajratish"""
     parts = full_name.split()
     return " ".join(parts[:2]) if len(parts) >= 2 else full_name
 
@@ -40,8 +39,8 @@ def index(request):
     except Operator.DoesNotExist:
         pass
 
-    today = timezone.now().date()
-    now = timezone.now()
+    now = localtime()
+    today = now.date()
 
     raw_top_10 = (
         RequestLog.objects
@@ -62,7 +61,6 @@ def index(request):
         })
         top_10_ids.append(entry['operator__id'])
 
-    # Rank
     top_10_rank = None
     if selected_operator and selected_operator.id in top_10_ids:
         top_10_rank = top_10_ids.index(selected_operator.id) + 1
