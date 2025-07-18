@@ -13,7 +13,7 @@ from django.utils.timezone import localtime
 
 
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-CREDENTIALS = ServiceAccountCredentials.from_json_keyfile_name(r'/home/projects/..../creds.json', SCOPE)
+CREDENTIALS = ServiceAccountCredentials.from_json_keyfile_name(r'/home/projects/application/creds.json', SCOPE)
 
 
 def clone_datas():
