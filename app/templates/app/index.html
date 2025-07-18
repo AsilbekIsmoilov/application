@@ -1,0 +1,102 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Фиксация 1242</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<header>
+    Фиксация
+</header>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="wrapper">
+        <div class="main-card">
+            <div class="form-group">
+                <label class="required">Оператор</label>
+                {{ form.operator }}
+            </div>
+            <div class="form-group">
+                <label class="required">Номер абонента</label>
+                {{ form.phone_num }}
+            </div>
+            <div class="form-group">
+                <label>ID услуги</label>
+                {{ form.service_id }}
+            </div>
+            <div class="form-group">
+                <label>Номер заявки</label>
+                {{ form.num_app }}
+            </div>
+            <div class="form-group">
+                <label class="required">Тема обращения</label>
+                {{ form.theme }}
+            </div>
+            <div class="form-group">
+                {{ form.comment }}
+            </div>
+            <button type="submit" class="submit-btn">Отправить</button>
+        </div>
+
+        <div class="sidebar">
+            <div class="box">
+                <h4><img src="{% static 'img/bar.png' %}" style="height: 20px; vertical-align: middle;"> Статистика</h4>
+                <p class="stat">За день: <span>{{ daily_status }}</span></p>
+                <p class="stat">Зе месяц: <span>{{ monthly_status }}</span></p>
+            </div>
+            <br>
+            <div class="box">
+                <h4><img src="{% static 'img/top.png' %}" style="height: 20px; vertical-align: middle;"> Топ 10 за день
+                </h4>
+                <ol>
+                    {% for item in top_10_list %}
+                    <li {% if item.id|stringformat:"s" == selected_operator_id|stringformat:"s" %} class="highlight"{% endif %}>
+                    {{ item.fio }} — {{ item.count }}
+                    </li>
+                    {% endfor %}
+                </ol>
+                <button type="submit" class="update-btn" onclick="location.reload()">Обновить</button>
+            </div>
+            <br>
+            <div class="box">
+                <h4><img src="{% static 'img/link.png' %}" style="height: 20px; vertical-align: middle;"> Ссылки</h4>
+                <ul style="padding-left: 20px;">
+                    {% for link in urls %}
+                    <li>
+                        <a href="{{ link.url }}" target="_blank">
+                            {% if link.icons %}
+                            <img src="{{ link.icons.url }}" alt="{{ link.title }}"
+                                 style="height: 18px; margin-right: 5px; vertical-align: middle;">
+                            {% endif %}
+                            {{ link.title }}
+                        </a>
+                    </li>
+                    {% empty %}
+                    <li>Нет ссылок</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<footer style="position: relative;">
+    &copy; 2025
+
+    {% if messages %}
+    <div class="footer-message">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </div>
+    {% endif %}
+</footer>
+</body>
+</html>
