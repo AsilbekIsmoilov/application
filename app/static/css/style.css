@@ -1,0 +1,380 @@
+:root {
+  --primary: #2e89ff;
+  --primary-dark: #216bd0;
+  --success: #00cc70;
+  --light-bg: #f3f4f8;
+  --white: #ffffff;
+  --gray: #ccc;
+  --border: #dee2e6;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--light-bg);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background-color: #00dc82;
+  color: #333;
+  padding: 16px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.sidebar-layout {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar-nav {
+  width: 220px;
+  background: #0068e0;
+  padding: 20px;
+  color: white;
+  justify-content: space-between;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-nav h3 {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 10px;
+}
+
+.sidebar-nav a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 10px 14px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  background-color: white;
+  color:#0068e0;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+}
+
+.main-card, .box {
+  background: var(--white);
+  padding: 24px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.required::after {
+  content: '*';
+  color: red;
+  margin-left: 4px;
+}
+
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 15px;
+  border: 1.5px solid var(--gray);
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.submit-btn {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.submit-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+table thead {
+  background-color: var(--primary);
+  color: white;
+}
+
+table th,
+table td {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  text-align: left;
+  font-size: 14px;
+}
+
+table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+footer {
+  background-color: #0068e0;
+  color: white;
+  text-align: center;
+  padding: 14px 0;
+  margin-top: auto;
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .sidebar-layout {
+    flex-direction: column;
+  }
+
+  .sidebar-nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .sidebar-nav ul {
+    display: flex;
+    gap: 10px;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
+}
+
+.pagination {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.pagination a {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 2px;
+  background: #eaf4ff;
+  color: #007bff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.pagination a:hover {
+  background: #007bff;
+  color: white;
+}
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; display: none; }
+}
+
+.sidebar-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  margin-bottom: 12px;
+  animation: fadeOut 6s forwards;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sidebar-message::before {
+  font-size: 16px;
+}
+
+.sidebar-message-wrapper {
+  margin-top: auto;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; display: none; }
+}
+
+
+.request-form-box {
+  width: 800px;      
+}
+
+.filter-form {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-form select {
+  padding: 5px 10px;
+  font-size: 14px;
+  width: 300px;
+}
+.filter-form button {
+    background-color: gray;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.filter-form .form-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  flex: 1;
+}
+
+.filter-form label {
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.filter-form input,
+.filter-form select,
+.filter-form button {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+
+.filter-form input {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 250px;
+}
+
+      .form-and-stats {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .request-form-box {
+        flex: 1 1 45%;
+      }
+
+      .stats-box {
+        flex: 1 1 50%;
+      }
+
+      @media (max-width: 768px) {
+        .request-form-box,
+        .stats-box {
+          flex: 1 1 100%;
+        }
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+      }
+
+      .table th, .table td {
+        border: 1px solid var(--border);
+        padding: 8px;
+      }
+
+      .table th {
+        background-color: var(--primary);
+        color: white;
+        text-align: left;
+      }
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 10px;
+}
+
+ul li {
+  margin-bottom: 8px;
+}
+
+ul li a {
+  display: inline-flex;
+  align-items: center;
+  color: #2e89ff;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+ul li a:hover {
+  color: #216bd0;
+  text-decoration: underline;
+}
+
+ul li a img {
+  height: 18px;
+  margin-right: 6px;
+  vertical-align: middle;
+  border-radius: 4px;
+}
+td span {
+  margin-left: 5px;
+}

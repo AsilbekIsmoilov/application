@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Отчет</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<header>Отчет по фиксациям</header>
+
+<div class="sidebar-layout">
+    <aside class="sidebar-nav">
+        <ul>
+            <li><a href="{% url 'index' %}">Фиксация</a></li>
+            <li><a href="{% url 'statistics' %}">Статистика</a></li>
+            <li><a href="{% url 'report' %}" class="active">Отчет</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+
+       <div class="container">
+  <h3>Общая статистика</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr><th>Тема</th><th>Общая статистика</th></tr>
+    </thead>
+    <tbody>
+      {% for row in overall_stats %}
+      <tr>
+        <td>{{ row.theme__title }}</td>
+        <td>{{ row.count }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <button><a href="{% url 'download_excel' %}?type=total" class="btn-primary">⬇ Excel</a></button>
+</div>
+<form method="get" class="filter-form">
+  <label>С:</label>
+  <input type="date" name="start_date" value="{{ start_date }}">
+  <label>По:</label>
+  <input type="date" name="end_date" value="{{ end_date }}">
+  <button type="submit">Фильтр</button>
+</form>
+
+{% if start_date and end_date %}
+  <h4>Общее количество заявок: {{ total_count }}</h4>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Тема</th>
+        <th>Общая статистика</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in theme_stats %}
+        <tr>
+          <td>{{ row.theme__title }}</td>
+          <td>{{ row.count }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="2">Нет заявок за выбранный период</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+    </main>
+</div>
+
+<footer>&copy; 2025</footer>
+</body>
+</html>

@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Фиксацияни таҳрирлаш</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<header>Фиксацияни таҳрирлаш</header>
+
+<div class="sidebar-layout">
+  <aside class="sidebar-nav">
+    <ul>
+      <li><a href="{% url 'index' %}">Фиксация</a></li>
+      <li><a href="{% url 'statistics' %}">Статистика</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <form method="post" class="request-form-box">
+      {% csrf_token %}
+      <div class="main-card">
+        <div class="form-group">
+          <label class="required">Оператор</label>
+          {{ form.operator }}
+        </div>
+
+        <div class="form-group">
+          <label class="required">Номер абонента</label>
+          {{ form.phone_num }}
+        </div>
+
+        <div class="form-group">
+          <label>ID услуги</label>
+          {{ form.service_id }}
+        </div>
+
+        <div class="form-group">
+          <label>Номер заявки</label>
+          {{ form.num_app }}
+        </div>
+
+        <div class="form-group">
+          <label class="required">Тема обращения</label>
+          {{ form.theme }}
+        </div>
+
+        <div class="form-group">
+          {{ form.comment }}
+        </div>
+
+        <button type="submit" class="submit-btn">Сақлаш</button>
+      </div>
+    </form>
+  </main>
+</div>
+
+<footer>&copy; 2025</footer>
+</body>
+</html>
+    

@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Фиксация</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<header>Фиксация</header>
+
+<div class="sidebar-layout">
+  <aside class="sidebar-nav">
+    <ul>
+      <li><a href="{% url 'index' %}" class="active">Фиксация</a></li>
+      <li><a href="{% url 'statistics' %}">Статистика</a></li>
+    </ul>
+    {% if messages %}
+    <div class="sidebar-message-wrapper">
+      {% for message in messages %}
+        <div class="sidebar-message">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </aside>
+
+  <main class="main-content">
+
+    <div class="form-and-stats">
+      <form method="post" class="request-form-box">
+        {% csrf_token %}
+        <div class="main-card">
+          <div class="form-group"><label class="required">Оператор</label>{{ form.operator }}</div>
+          <div class="form-group"><label class="required">Номер абонента</label>{{ form.phone_num }}</div>
+          <div class="form-group"><label>ID услуги</label>{{ form.service_id }}</div>
+          <div class="form-group"><label>Номер заявки</label>{{ form.num_app }}</div>
+          <div class="form-group"><label class="required">Тема обращения</label>{{ form.theme }}</div>
+          <div class="form-group">{{ form.comment }}</div>
+          <button type="submit" class="submit-btn">Отправить</button>
+        </div>
+      </form>
+
+      <div class="stats-box main-card">
+        <h4><img src="{% static 'img/bar.png' %}" style="height: 20px; vertical-align: middle;"> Общая статистика</h4>
+        <table class="table table-bordered">
+          <thead>
+            <tr><th>Тема</th><th>Общая статистика</th></tr>
+          </thead>
+          <tbody>
+            {% for row in overall_stats %}
+              <tr>
+                <td>{{ row.theme__title }}</td>
+                <td>{{ row.count }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="2">Нет данных</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <br>
+        <hr>
+        <br>
+        <h4>Общее количество заявок: {{ total_count }}</h4>
+        <br>
+        <hr>
+        <br>
+        <h4><img src="{% static 'img/link.png' %}" style="height: 20px; vertical-align: middle;"> Ссылки:</h4>
+                <ul style="padding-left: 20px;">
+                    {% for link in urls %}
+                    <li>
+                        <a href="{{ link.url }}" target="_blank">
+                            {% if link.icons %}
+                            <img src="{{ link.icons.url }}" alt="{{ link.title }}"
+                                 style="height: 18px; margin-right: 5px; vertical-align: middle;">
+                            {% endif %}
+                            {{ link.title }}
+                        </a>
+                    </li>
+                    {% empty %}
+                    <li>Нет ссылок</li>
+                    {% endfor %}
+                </ul>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer>&copy; 2025</footer>
+</body>
+</html>
