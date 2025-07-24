@@ -19,30 +19,48 @@
 
   <main class="main-content">
     <form method="get" class="filter-form">
-  <label>Оператор:</label>
-  <select name="operator">
-    <option value="">Все</option>
-    {% for op in operators %}
-      <option value="{{ op.id }}" {% if op.id|stringformat:"s" == selected_operator %}selected{% endif %}>
-        {{ op.fio }} ({{ op.operator_id }})
-      </option>
-    {% endfor %}
-  </select>
+      <label>Оператор:</label>
+      <select name="operator">
+        <option value="">Все</option>
+        {% for op in operators %}
+          <option value="{{ op.id }}" {% if op.id|stringformat:"s" == selected_operator %}selected{% endif %}>
+            {{ op.fio }} ({{ op.operator_id }})
+          </option>
+        {% endfor %}
+      </select>
 
-  <label>Тема:</label>
-  <select name="theme">
-    <option value="">Все</option>
-    {% for th in themes %}
-      <option value="{{ th.id }}" {% if th.id|stringformat:"s" == selected_theme %}selected{% endif %}>
-        {{ th.title }}
-      </option>
-    {% endfor %}
-  </select>
-  
-  <button type="submit">Фильтр</button>
-    <label>Поиск по номеру:</label>
-  <input type="text" name="phone_num" placeholder="Введите номер..." value="{{ selected_phone }}">
-</form>
+      <label>Тема:</label>
+      <select name="theme">
+        <option value="">Все</option>
+        {% for th in themes %}
+          <option value="{{ th.id }}" {% if th.id|stringformat:"s" == selected_theme %}selected{% endif %}>
+            {{ th.title }}
+          </option>
+        {% endfor %}
+      </select>
+
+      <label>Поиск по номеру:</label>
+      <input type="text" name="phone_num" placeholder="Введите номер..." value="{{ selected_phone|default_if_none:'' }}">
+
+      <button type="submit">Поиск</button>
+    </form>
+          <div class="pagination" style="text-align:center; margin-top: 20px;">
+        {% if records.has_previous %}
+          <a href="?page=1{% if query_string %}&{{ query_string }}{% endif %}">&laquo; Начало</a>
+          <a href="?page={{ records.previous_page_number }}{% if query_string %}&{{ query_string }}{% endif %}">&laquo;</a>
+        {% endif %}
+
+        <span style="margin: 0 10px;">
+          Страница {{ records.number }} / {{ records.paginator.num_pages }}
+        </span>
+
+        {% if records.has_next %}
+          <a href="?page={{ records.next_page_number }}{% if query_string %}&{{ query_string }}{% endif %}">&raquo;</a>
+          <a href="?page={{ records.paginator.num_pages }}{% if query_string %}&{{ query_string }}{% endif %}">Последний &raquo;</a>
+        {% endif %}
+      </div>
+      <br>
+
     <div class="box">
       <h4>Список всех фиксаций</h4>
       <table style="width:100%; border-collapse:collapse;">
@@ -60,45 +78,31 @@
           </tr>
         </thead>
         <tbody>
-{% for rec in records %}
-  <tr>
-    <td>{{ rec.id }}</td>
-    <td>{{ rec.operator.fio }} ({{ rec.operator.operator_id }})</td>
-    <td>{{ rec.phone_num }}</td>
-    <td>{{ rec.service_id }}</td>
-    <td>{{ rec.num_app }}</td>
-    <td>{{ rec.theme.title }}</td>
-    <td style="white-space: pre-wrap; word-break: break-word; max-width: 300px;">
-        {{ rec.comment }}
-    </td>
-    <td>{{ rec.created_at|date:"d.m.Y" }}</td>
-    <td>
-      <a href="{% url 'edit_request' rec.id %}">Изменить</a>              
-    </td>
-  </tr>
-{% empty %}
-  <tr><td colspan="8">Нет фиксаций</td></tr>
-{% endfor %}
+        {% for rec in records %}
+          <tr>
+            <td>{{ rec.id }}</td>
+            <td>{{ rec.operator.fio }} ({{ rec.operator.operator_id }})</td>
+            <td>{{ rec.phone_num }}</td>
+            <td>{{ rec.service_id }}</td>
+            <td>{{ rec.num_app }}</td>
+            <td>{{ rec.theme.title }}</td>
+            <td style="white-space: pre-wrap; word-break: break-word; max-width: 300px;">{{ rec.comment }}</td>
+            <td>{{ rec.created_at|date:"d.m.Y" }}</td>
+            <td>
+              <a href="{% url 'edit_request' rec.id %}">Изменить</a> 
+              {% if rec.updated_at and rec.updated_at != rec.created_at %}
+                <span style="display: block; margin-top: 5px; font-size: 12px; color: gray;">
+                  изменено в {{ rec.updated_at|time:"H:i" }}
+                </span>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="9">Нет фиксаций</td></tr>
+        {% endfor %}
         </tbody>
       </table>
-      <div style="text-align:center; margin-top: 20px;">
-</div>
     </div>
-      <div class="pagination">
-    {% if records.has_previous %}
-      <a href="?page=1">&laquo; Начало</a>
-      <a href="?page={{ records.previous_page_number }}">&laquo;</a>
-    {% endif %}
-
-    <span style="margin: 0 10px;">
-      Страница {{ records.number }} / {{ records.paginator.num_pages }}
-    </span>
-
-    {% if records.has_next %}
-      <a href="?page={{ records.next_page_number }}">&raquo;</a>
-      <a href="?page={{ records.paginator.num_pages }}">Последний &raquo;</a>
-    {% endif %}
-  </div>
   </main>
 </div>
 <footer>&copy; 2025</footer>

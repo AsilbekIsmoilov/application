@@ -3,11 +3,11 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Фиксацияни таҳрирлаш</title>
+    <title>Изменить фиксацию</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-<header>Фиксацияни таҳрирлаш</header>
+<header>Изменить фиксацию</header>
 
 <div class="sidebar-layout">
   <aside class="sidebar-nav">
@@ -50,7 +50,12 @@
           {{ form.comment }}
         </div>
 
-        <button type="submit" class="submit-btn">Сақлаш</button>
+        <button type="submit" class="submit-btn">Сохранить</button>
+        {% if request.META.HTTP_REFERER %}
+        <form method="get" action="{{ request.META.HTTP_REFERER }}">
+                <button type="submit" class="back-button">Назад</button>
+        </form>
+        {% endif %}
       </div>
     </form>
   </main>

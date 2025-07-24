@@ -10,7 +10,8 @@ from django.http import HttpResponse
 import pandas as pd
 from datetime import datetime, time
 from django.shortcuts import render, get_object_or_404, redirect
-
+from urllib.parse import urlencode
+from django.contrib.auth import authenticate, login, logout
 
 def index_view(request):
     selected_operator_id = request.session.get('selected_operator_id')
@@ -61,12 +62,14 @@ def statistics(request):
     if phone_num:
         records = records.filter(phone_num__icontains=phone_num)
 
-    
-        
-
     paginator = Paginator(records.order_by('-created_at'), 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+
+    query_params = request.GET.copy()
+    if 'page' in query_params:
+        del query_params['page']
+    query_string = urlencode(query_params)
 
     context = {
         'records': page_obj,
@@ -75,9 +78,9 @@ def statistics(request):
         'selected_operator': operator_id,
         'selected_theme': theme_id,
         'selected_phone': phone_num,
+        'query_string': query_string,
     }
     return render(request, 'app/statistics.html', context)
-
 
 @login_required
 def report_view(request):
@@ -137,6 +140,7 @@ def download_excel(request):
 
 
 
+@login_required(login_url='login')
 def edit_request(request, pk):
     instance = get_object_or_404(RequestLog, pk=pk)
     if request.method == 'POST':
@@ -148,3 +152,22 @@ def edit_request(request, pk):
         form = RequestLogForm(instance=instance)
     
     return render(request, 'app/edit_request.html', {'form': form,'instance': instance })
+
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            next_url = request.GET.get('next') or 'statistics'
+            return redirect(next_url)
+        else:
+            return render(request, 'app/login.html', {'error': 'Неверный логин или пароль'})
+    return render(request, 'app/login.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
